@@ -1,9 +1,12 @@
 import React from 'react';
 import {render} from 'react-dom';
-import MyComponent from '../../src';
+import Pad from '../../src';
 
 const App = () => (
-    <MyComponent />
+    <Pad
+        dimensions={[5,5]}
+        avatar={''}
+    />
 );
 
 render (<App />, document.getElementById("root"));

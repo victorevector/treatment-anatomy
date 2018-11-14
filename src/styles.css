@@ -1,3 +1,8 @@
 h1 {
     color: red;
 }
+
+.grid {
+    width: 90%;
+    height: 100%;
+}
