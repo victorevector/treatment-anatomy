@@ -1,44 +1,40 @@
 import React from 'react';
 import './styles.css';
 
-// A grid is made up of many equidistant points.
-// A point is clickable and will reveal itself when clicked
-// An avatar is an image
-// A pad lays an avatar over the grid and lines them up properly. 
-// a pad knows the state and can export it
-
-// How does a parent component become aware of events that happen on its children? If the parent passes a function to the child, then the child can affect variables within the parent (closure)
-
-// How does component get rendered with pre-defined state? Constructor 
-
-// How does this component export state? add method that returns this.state.history.pop()
-
-// How does this component communicate with a backend? (optional) how do you wire up a component to a backend api?
-
-// State: an array that represents the grid ; index = positon; value = on/off
-
 function Point(props) {
     return (
         <button 
-            className="point"
-            onClick={()=>{console.log(props.coord)}}
-        ></button>
+            className="point hidden"
+            onClick={props.onClick}
+        >x</button>
     );
 }
 
 class Grid extends React.Component {
-    renderLine(li, count) {
+    renderLine(li, count, onClick) {
         const line = [];
         for (let i = 0; i < count; i++) {
-            let coord = li + '-' + i;
-            line.push(<Point coord={coord} key={i} />);
+            let coord = [li, i];
+            line.push(
+                <Point 
+                    coord={coord} 
+                    key={i} 
+                    onClick={() => onClick(coord)}
+                />
+            );
         }
         return line;
     }
     render () {
         const lines = this.props.grid.map((line, li) => {
             return (
-                <div className="line" key={li}>{this.renderLine(li, line.length)}</div>
+                <div className="line" key={li}>
+                    {this.renderLine(
+                        li, 
+                        line.length, 
+                        this.props.onClick 
+                    )}
+                </div>
             )
         })
         return (
@@ -81,13 +77,18 @@ class Pad extends React.Component {
         };
     }
 
-    handleClick(d) {
+    handleClick(coord) {
+        console.log(coord);
+
     }
 
     render(){
         return (
             <div className="pad">
-                <Grid grid={this.state.grid} />
+                <Grid 
+                    grid={this.state.grid}
+                    onClick = {(coord) => this.handleClick(coord)}
+                />
             </div>
         )
     }

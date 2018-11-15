@@ -6,3 +6,14 @@ h1 {
     width: 90%;
     height: 100%;
 }
+
+.hidden {
+    opacity: 0;
+}
+
+.point {
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+}

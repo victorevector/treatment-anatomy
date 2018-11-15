@@ -4,7 +4,7 @@ import Pad from '../../src';
 
 const App = () => (
     <Pad
-        dimensions={[5,5]}
+        dimensions={[30,100]}
         avatar={''}
     />
 );
