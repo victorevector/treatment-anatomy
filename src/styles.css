@@ -3,8 +3,13 @@ h1 {
 }
 
 .grid {
-    width: 90%;
-    height: 100%;
+    max-width: fit-content;
+    border-color: black;
+    border-style: dotted none none dotted;
+}
+
+.line {
+    max-width: fit-content;
 }
 
 .hidden {
@@ -16,4 +21,12 @@ h1 {
     background: none;
     padding: 0;
     margin: 0;
+}
+
+.notes-form {
+    position: absolute;
+    height: 30vh;
+    width: 100%;
+    bottom: 0;
+    background-color: white;
 }
