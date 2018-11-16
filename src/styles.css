@@ -23,10 +23,18 @@ h1 {
     margin: 0;
 }
 
+.current {
+    color: red;
+}
+
 .notes-form {
     position: absolute;
-    height: 30vh;
+    height: 50vh;
     width: 100%;
     bottom: 0;
     background-color: white;
+}
+
+.notes-top {
+    display: none;
 }
