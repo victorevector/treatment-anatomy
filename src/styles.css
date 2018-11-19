@@ -35,6 +35,10 @@ h1 {
     background-color: white;
 }
 
+.removed {
+    display: none;
+}
+
 .notes-top {
     display: none;
 }

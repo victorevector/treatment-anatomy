@@ -1,27 +1,55 @@
 import React from 'react';
 import './styles.css';
 
-function NotesForm(props) {
-    // Behaviors: save event, remove event -> change state 
+function LabelInput (props) {
     return (
-        <div className="notes-form">
-            <div className="notes-top"></div>
-            <div className="notes-bottom">
-                <form className="">
-                    <label>Drug:</label>
-                    <input type="text" />
-                    <label>Dosage:</label>
-                    <input type="text" />
-                </form>
-                <div className="notes-control">
-                    <button>Close</button>
-                </div>
-            </div>
+        <div className="form-input-group">
+            <label>{props.name}</label>
+            <input type="text" name={props.name} value={props.value} />
         </div>
     );
 }
 
+class Form extends React.Component {
+    // Props - template of form inputs
+    // Events - onClose
+    // Parent constructs template and function to execute onClose
+    // render() => render form inputs from template; bind function to event.
+    renderInputs(template){
+        const inputs = [];
+        for (const key in template) {
+            if (template.hasOwnProperty(key)) {
+                let input = <LabelInput key={key} name={key} value={template[key]} />;
+                inputs.push(input);
+            }
+        }
+        return inputs;
+    }
+
+    render () {
+        return (
+            <form>
+                {this.renderInputs(this.props.template)}
+            </form>
+        );
+    }
+}
+
+class NotesForm extends React.Component {
+    render() {
+        return (
+            <div className="notes-form">
+                <div className="notes-top"></div>
+                <div className="notes-bottom">
+                    <Form template={this.props.currentValue}/>
+                </div>
+            </div>
+        );
+    }
+}
+
 class Point extends React.Component {
+    // TODO parent should be in charge of calculating state!
     applyState(base, coord, current, grid) {
         var coorX = coord[0], coorY = coord[1];
         var curX = current[0], curY = current[1];
@@ -92,6 +120,7 @@ class Grid extends React.Component {
 }
 
 class Pad extends React.Component {
+    // Maintains STATE
     // TODO: render GRID on init 
     // TODO: load notes schema 
     newGrid(d) {
@@ -101,15 +130,12 @@ class Pad extends React.Component {
     }
     constructor(props) {
         super(props);
-        var index = 'index' in props ? props.index : [];
         var grid = 'grid' in props ? props.grid : this.newGrid(props.dimensions);
         this.state = {
-            dimensions: props.dimensions, //helps to construct new grid
-            avatar: props.avatar, //image to lay over grid
-            index: index, //quick lookup of populated grid points
+            dimensions: props.dimensions, //helps to construct new grid (SHOULD BE PROP),
+            template: {drug: '', dosage: ''}, //template for the form (SHOULD BE PROP)
+            avatar: props.avatar, //image to lay over grid (SHOULD BE PROP)
             grid: grid, //source of truth
-            form: false,
-            inputs: '',
             current: [null, null]
         };
     }
@@ -131,14 +157,6 @@ class Pad extends React.Component {
         else {
             this.setState({current: coord});
         }
-
-
-
-        // if (this.state.grid[x][y] === null) {
-        //     let grid = this.copyGrid(this.state.grid);
-        //     grid[x][y] = {};
-        //     this.setState({grid: grid});
-        // }
     }
 
     copyGrid(grid){
@@ -147,9 +165,29 @@ class Pad extends React.Component {
         return shallow.map((arr) => { return arr.slice() });
     }
 
-    
+    handleInputChange(event) {
+        let curX = this.state.current[0], curY = this.state.current[1];
+        let grid = this.copyGrid(this.state.grid);
+        let notes = grid[curX][curY] === null ? 
+            {} : grid[curX][curY];
+        notes[event.target.name] = event.target.value;
+        grid[curX][curY] = notes;
+        this.setState({grid: grid});
+    }
+
+    renderForm() {
+        // form's state is a function of the currently selected point
+        const x = this.state.current[0] , y = this.state.current[1];
+        var currentValue;
+        if (this.state.grid[x][y] === null) {
+            currentValue = this.state.template;
+        }
+        else currentValue = this.state.grid[x][y];
+        return <NotesForm currentValue={currentValue} />;
+    }
 
     render() {
+        let hasForm = this.state.current[0] !== null && this.state.current[1] !== null;
         return (
             <div className="pad">
                 <Grid
@@ -157,7 +195,7 @@ class Pad extends React.Component {
                     current={this.state.current}
                     onClick={(coord) => this.handleClick(coord)}
                 />
-                {this.state.form && <NotesForm/>} 
+                {hasForm && this.renderForm()}
             </div>
         )
     }
