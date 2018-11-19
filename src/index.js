@@ -5,7 +5,7 @@ function LabelInput (props) {
     return (
         <div className="form-input-group">
             <label>{props.name}</label>
-            <input type="text" name={props.name} value={props.value} />
+            <input type="text" name={props.name} value={props.value} onChange={props.onChange} />
         </div>
     );
 }
@@ -19,7 +19,11 @@ class Form extends React.Component {
         const inputs = [];
         for (const key in template) {
             if (template.hasOwnProperty(key)) {
-                let input = <LabelInput key={key} name={key} value={template[key]} />;
+                let input = <LabelInput 
+                    key={key} 
+                    name={key} 
+                    value={template[key]} 
+                    onChange={this.props.onChange} />;
                 inputs.push(input);
             }
         }
@@ -41,7 +45,7 @@ class NotesForm extends React.Component {
             <div className="notes-form">
                 <div className="notes-top"></div>
                 <div className="notes-bottom">
-                    <Form template={this.props.currentValue}/>
+                    <Form template={this.props.currentValue} onChange={this.props.onChange}/>
                 </div>
             </div>
         );
@@ -166,24 +170,35 @@ class Pad extends React.Component {
     }
 
     handleInputChange(event) {
-        let curX = this.state.current[0], curY = this.state.current[1];
+        // save input to current grid point
+        let x = this.state.current[0], y = this.state.current[1];
         let grid = this.copyGrid(this.state.grid);
-        let notes = grid[curX][curY] === null ? 
-            {} : grid[curX][curY];
+        var notes;
+        if (grid[x][y] === null) {
+            notes = Object.assign({}, this.state.template);
+        }
+        else notes = grid[x][y];
         notes[event.target.name] = event.target.value;
-        grid[curX][curY] = notes;
+        grid[x][y] = notes;
         this.setState({grid: grid});
     }
 
     renderForm() {
         // form's state is a function of the currently selected point
         const x = this.state.current[0] , y = this.state.current[1];
-        var currentValue;
+        console.log(x,y);
+        let currentValue;
+        console.log(this.state.template);
         if (this.state.grid[x][y] === null) {
             currentValue = this.state.template;
         }
         else currentValue = this.state.grid[x][y];
-        return <NotesForm currentValue={currentValue} />;
+        return (
+            <NotesForm 
+                currentValue={currentValue} 
+                onChange={ (e) => this.handleInputChange(e) } 
+            />
+        );
     }
 
     render() {
