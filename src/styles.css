@@ -10,6 +10,7 @@ h1 {
 
 .line {
     max-width: fit-content;
+    height: 8px;
 }
 
 .hidden {
@@ -21,6 +22,10 @@ h1 {
     background: none;
     padding: 0;
     margin: 0;
+    font-size: 15px;
+    overflow: visible;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .current {

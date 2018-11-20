@@ -72,10 +72,10 @@ class Point extends React.Component {
             this.props.grid
             );
         return (
-            <button
+            <span
                 className={cname}
                 onClick={this.props.onClick}
-            >x</button>
+            >x</span>
         );
     }
 }
@@ -137,7 +137,7 @@ class Pad extends React.Component {
         var grid = 'grid' in props ? props.grid : this.newGrid(props.dimensions);
         this.state = {
             dimensions: props.dimensions, //helps to construct new grid (SHOULD BE PROP),
-            template: {drug: '', dosage: ''}, //template for the form (SHOULD BE PROP)
+            template: props.template, //template for the form (SHOULD BE PROP)
             avatar: props.avatar, //image to lay over grid (SHOULD BE PROP)
             grid: grid, //source of truth
             current: [null, null]
@@ -203,8 +203,13 @@ class Pad extends React.Component {
 
     render() {
         let hasForm = this.state.current[0] !== null && this.state.current[1] !== null;
+        let avatarStyle = {
+            backgroundImage: "url("+this.state.avatar+")",
+            backgroundRepeat: 'no-repeat'
+
+        };
         return (
-            <div className="pad">
+            <div className="pad" style={avatarStyle}>
                 <Grid
                     grid={this.state.grid}
                     current={this.state.current}
