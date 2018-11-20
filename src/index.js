@@ -60,7 +60,7 @@ class Point extends React.Component {
         var isUndefined = grid[coorX][coorY] === null;
         var isCurrent = curX == coorX && curY == coorY;
 
-        if (isCurrent && isUndefined) base += " current";
+        if (isCurrent) base += " current";
         else if (!isCurrent && isUndefined) base += " hidden";
         return base;
     }
