@@ -1,14 +1,15 @@
 const path = require('path');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const hashVal = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 const htmlWebpackPlugin = new HtmlWebpackPlugin({
     template: path.join(__dirname, "examples/src/index.html"),
-    filename: "./index.html"
+    filename: "./index.html" 
 });
 module.exports = {
     entry: path.join(__dirname, "examples/src/index.js"),
     output: {
         path: path.join(__dirname, "examples/dist"),
-        filename: "bundle.js"
+        filename: "bundle."+ hashVal +".js"
     },
     module: {
         rules: [
