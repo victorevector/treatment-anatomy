@@ -13,7 +13,7 @@ h1 {
 }
 
 .hidden {
-    opacity: 0.1;
+    opacity: 0;
 }
 
 .point {
