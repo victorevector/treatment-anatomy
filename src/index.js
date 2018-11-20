@@ -145,7 +145,6 @@ class Pad extends React.Component {
     }
 
     handleClick(coord) {
-        console.log(coord);
         var x = coord[0], y = coord[1];
 
         // activate/deactivate point
@@ -186,9 +185,7 @@ class Pad extends React.Component {
     renderForm() {
         // form's state is a function of the currently selected point
         const x = this.state.current[0] , y = this.state.current[1];
-        console.log(x,y);
         let currentValue;
-        console.log(this.state.template);
         if (this.state.grid[x][y] === null) {
             currentValue = this.state.template;
         }
