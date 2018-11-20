@@ -72,10 +72,10 @@ class Point extends React.Component {
             this.props.grid
             );
         return (
-            <span
+            <div
                 className={cname}
                 onClick={this.props.onClick}
-            >x</span>
+            ></div>
         );
     }
 }

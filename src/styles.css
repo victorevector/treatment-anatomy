@@ -9,27 +9,28 @@ h1 {
 }
 
 .line {
-    max-width: fit-content;
-    height: 8px;
+    /* max-width: fit-content; */
 }
 
 .hidden {
-    opacity: 0;
+    opacity: 0.1;
 }
 
 .point {
-    border: none;
     background: none;
     padding: 0;
     margin: 0;
-    font-size: 15px;
-    overflow: visible;
     cursor: pointer;
     font-family: Arial, Helvetica, sans-serif;
+    border: black solid;
+    display: inline-block;
+    width: 4px;
+    height: 4px;
 }
 
 .current {
     color: red;
+    border: red solid;
 }
 
 .notes-form {
