@@ -4,7 +4,7 @@ import './styles.css';
 function LabelInput (props) {
     return (
         <div className="form-input-group">
-            <label>{props.name}</label>
+            <label>{props.name}: &nbsp;</label>
             <input type="text" name={props.name} value={props.value} onChange={props.onChange} />
         </div>
     );
@@ -43,7 +43,6 @@ class NotesForm extends React.Component {
     render() {
         return (
             <div className="notes-form">
-                <div className="notes-top"></div>
                 <div className="notes-bottom">
                     <Form template={this.props.currentValue} onChange={this.props.onChange}/>
                 </div>

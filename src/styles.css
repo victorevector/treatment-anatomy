@@ -31,10 +31,28 @@
 
 .notes-form {
     position: absolute;
-    /* height: 50vh; */
-    width: 100%;
-    bottom: 0;
+    padding: 2%;
     background-color: white;
+    -webkit-box-shadow: 1px 5px 21px -6px rgba(0,0,0,0.71);
+    -moz-box-shadow: 1px 5px 21px -6px rgba(0,0,0,0.71);
+    box-shadow: 1px 5px 21px -6px rgba(0,0,0,0.71);
+}
+
+.form-input-group {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.form-input-group label {
+    font-weight: bold;
+    /* max-width: 50%; */
+}
+
+.form-input-group input {
+    /* max-width: 50%; */
 }
 
 .removed {
