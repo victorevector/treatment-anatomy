@@ -124,9 +124,12 @@ class Grid extends React.Component {
 }
 
 class Pad extends React.Component {
-    // Maintains STATE
-    // TODO: render GRID on init 
-    // TODO: load notes schema 
+    // Props:
+    // dimensions [x,y]
+    // template: {}
+    // avatar: ''
+    // grid: [[],]
+    // callback: ()
     newGrid(d) {
         return Array(d[0]).fill(
             Array(d[1]).fill(null)
@@ -136,9 +139,9 @@ class Pad extends React.Component {
         super(props);
         var grid = 'grid' in props ? props.grid : this.newGrid(props.dimensions);
         this.state = {
-            dimensions: props.dimensions, //helps to construct new grid (SHOULD BE PROP),
-            template: props.template, //template for the form (SHOULD BE PROP)
-            avatar: props.avatar, //image to lay over grid (SHOULD BE PROP)
+            // dimensions: props.dimensions, //helps to construct new grid (SHOULD BE PROP),
+            // template: props.template, //template for the form (SHOULD BE PROP)
+            // avatar: props.avatar, //image to lay over grid (SHOULD BE PROP)
             grid: grid, //source of truth
             current: [null, null]
         };
@@ -152,10 +155,13 @@ class Pad extends React.Component {
             // if current point gets clicked again
             let grid = this.copyGrid(this.state.grid)
             grid[x][y] = null;
-            this.setState({
-                current: [null, null],
-                grid: grid
-            });
+            this.setState(
+                {
+                    current: [null, null],
+                    grid: grid
+                }, 
+                this.execGridChange
+            );
         }
         else {
             this.setState({current: coord});
@@ -168,18 +174,25 @@ class Pad extends React.Component {
         return shallow.map((arr) => { return arr.slice() });
     }
 
+    execGridChange() {
+        // callback for setState grid
+        if ('callback' in this.props) {
+            this.props.callback(this.state.grid);
+        }
+    }
+
     handleInputChange(event) {
         // save input to current grid point
         let x = this.state.current[0], y = this.state.current[1];
         let grid = this.copyGrid(this.state.grid);
         var notes;
         if (grid[x][y] === null) {
-            notes = Object.assign({}, this.state.template);
+            notes = Object.assign({}, this.props.template);
         }
         else notes = grid[x][y];
         notes[event.target.name] = event.target.value;
         grid[x][y] = notes;
-        this.setState({grid: grid});
+        this.setState({grid: grid}, this.execGridChange);
     }
 
     renderForm() {
@@ -187,7 +200,7 @@ class Pad extends React.Component {
         const x = this.state.current[0] , y = this.state.current[1];
         let currentValue;
         if (this.state.grid[x][y] === null) {
-            currentValue = this.state.template;
+            currentValue = this.props.template;
         }
         else currentValue = this.state.grid[x][y];
         return (
@@ -201,7 +214,7 @@ class Pad extends React.Component {
     render() {
         let hasForm = this.state.current[0] !== null && this.state.current[1] !== null;
         let avatarStyle = {
-            backgroundImage: "url("+this.state.avatar+")",
+            backgroundImage: "url("+this.props.avatar+")",
             backgroundRepeat: 'no-repeat'
 
         };

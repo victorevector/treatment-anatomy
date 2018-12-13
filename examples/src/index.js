@@ -7,6 +7,7 @@ const App = () => (
         dimensions={[40,25]}
         avatar={"https://www.courthouseclinics.com/wp-content/themes/kickstart-child/assets/vaser/imgs/face-a.png"}
         template={{dosage: '', drug: 'botox', metric: 'unit'}}
+        gridChange={(e) => console.log(e)}
     />
 );
 
